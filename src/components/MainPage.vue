@@ -11,7 +11,8 @@
                     
                 },
 
-                rowCount: "3",
+                rowCount: "8",
+                basketCount: 0,
 
                 rowCountList: [
                     {
@@ -141,7 +142,18 @@
                         stockAmount: 5,
                     }
                 ]
+            }
+        },
 
+        methods: {
+            addBasket(book){
+                book.isBasket = !book.isBasket;
+                this.basketCount = this.books.filter(x => x.isBasket).length;
+            },
+
+            clearBasket () {
+                this.books.map(x => x.isBasket = 0);
+                this.basketCount = 0;
             }
         }
     }
@@ -160,6 +172,12 @@
                 {{ item.label }}
             </option>
         </select>
+        <div class="basket-count-area">
+            Basket: {{ basketCount }}
+        </div>
+        <button type="button" @click="clearBasket">
+            Clear Basket
+        </button>
     </div>
     <div class="book-container" :class="`book-container-${rowCount}-column`">
         <div class="book-item" :style="productCardStyle" v-for="(book, index) in books" :key="index" :class="{ 'first' : index === 0 }">
@@ -171,7 +189,7 @@
             <h2 v-bind:style="styleH2Title">{{ book.name }}
             </h2>
             <div>{{ book.desc }}</div>
-            <button v-if="!book.isBasket" class="add-basket">Add Basket</button>
+            <button v-if="!book.isBasket" class="add-basket" @click="addBasket(book)">Add Basket</button>
         </div>
     </div>
 
