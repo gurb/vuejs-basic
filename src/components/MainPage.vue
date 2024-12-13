@@ -11,6 +11,27 @@
                     
                 },
 
+                rowCount: "3",
+
+                rowCountList: [
+                    {
+                        value: "3",
+                        label: "3-col"
+                    },
+                    {
+                        value: "4",
+                        label: "4-col"
+                    },
+                    {
+                        value: "6",
+                        label: "6-col"
+                    },
+                    {
+                        value: "8",
+                        label: "8-col"
+                    }
+                ],
+
                 bookPriceStyle: {
                     'padding': '5px',
                     'background': 'green',
@@ -127,7 +148,20 @@
 </script>
 
 <template>
-    <div class="book-container">
+    <div class="book-grid-control-container">
+        <select v-model="rowCount">
+            <!-- <option v-for="(stringItem, index) in rowCountList" :value="stringItem">
+                {{ stringItem }}
+            </option> -->
+            <!-- Create a message to select one -->
+            <option disabled value="">Select row status</option>
+            <!-- Use v-for to create the list of options -->
+            <option v-for="item in rowCountList" :value="item.value">
+                {{ item.label }}
+            </option>
+        </select>
+    </div>
+    <div class="book-container" :class="`book-container-${rowCount}-column`">
         <div class="book-item" :style="productCardStyle" v-for="(book, index) in books" :key="index" :class="{ 'first' : index === 0 }">
             <div class="book-image-area">
                 <img v-bind:src="book.imageSrc">
@@ -143,11 +177,25 @@
 
 </template>
 
+<!-- v-model creates a two-way binding between an HTML control and the associated data. -->
+<!-- v-bind creates a one-way binding. So any changes the user makes in the form aren't stored in state-->
+
 <style scoped>
     .book-container {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
         grid-gap: 0.5em;
+    }
+    .book-container-3-column {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .book-container-4-column {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .book-container-6-column {
+        grid-template-columns: repeat(6, 1fr);
+    }
+    .book-container-8-column {
+        grid-template-columns: repeat(8, 1fr);
     }
     .book-item {
         padding: 10px;
