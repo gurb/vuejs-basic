@@ -155,6 +155,13 @@
                 this.books.map(x => x.isBasket = 0);
                 this.basketCount = 0;
             }
+        },
+
+        computed: {
+            // computed property
+            getBasketList() {
+                return this.books.filter(x => x.isBasket);
+            }
         }
     }
 </script>
@@ -179,19 +186,28 @@
             Clear Basket
         </button>
     </div>
-    <div class="book-container" :class="`book-container-${rowCount}-column`">
-        <div class="book-item" :style="productCardStyle" v-for="(book, index) in books" :key="index" :class="{ 'first' : index === 0 }">
-            <div class="book-image-area">
-                <img v-bind:src="book.imageSrc">
-                <span :style="bookPriceStyle">{{ book.price }}</span>
-                <span class="sold-out-badge" v-show="book.stockAmount < 10">Almost sold out!</span>
+    <div class="main-page">
+        <div class="book-container" :class="`book-container-${rowCount}-column`">
+            <div class="book-item" :style="productCardStyle" v-for="(book, index) in books" :key="index" :class="{ 'first' : index === 0 }">
+                <div class="book-image-area">
+                    <img v-bind:src="book.imageSrc">
+                    <span :style="bookPriceStyle">{{ book.price }}</span>
+                    <span class="sold-out-badge" v-show="book.stockAmount < 10">Almost sold out!</span>
+                </div>
+                <h2 v-bind:style="styleH2Title">{{ book.name }}
+                </h2>
+                <div>{{ book.desc }}</div>
+                <button v-if="!book.isBasket" class="add-basket" @click="addBasket(book)">Add Basket</button>
             </div>
-            <h2 v-bind:style="styleH2Title">{{ book.name }}
-            </h2>
-            <div>{{ book.desc }}</div>
-            <button v-if="!book.isBasket" class="add-basket" @click="addBasket(book)">Add Basket</button>
+        </div>
+        <div class="book-basket">
+            <h3>Basket list</h3>
+            <ul>
+                <li v-for="item in getBasketList">{{ item.name }}</li>
+            </ul>
         </div>
     </div>
+    
 
 </template>
 
@@ -199,9 +215,17 @@
 <!-- v-bind creates a one-way binding. So any changes the user makes in the form aren't stored in state-->
 
 <style scoped>
+    .main-page {
+        display:flex;
+        column-gap: 2%;
+        width: 100%;
+    }
+    .book-basket {
+        width: 20%;
+    }
     .book-container {
+        width:80%;
         display: grid;
-        grid-gap: 0.5em;
     }
     .book-container-3-column {
         grid-template-columns: repeat(3, 1fr);
