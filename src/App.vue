@@ -3,7 +3,7 @@ import MainPage from './components/MainPage.vue'
 </script>
 
 <template>
-    <MainPage />
+    <main-page/>
 </template>
 
 <style scoped>

@@ -1,6 +1,21 @@
-
 <script>
+    import BookContainer from '/src/components/BookContainer.vue';
+
     export default {
+        // vue.js will convert the component named MainPage into the kebab-cased main-page. (example: <main-page/>)
+        name: 'MainPage',
+        components: {
+            BookContainer,
+        }, 
+        // props: [
+            // 'property1', 
+            // 'property2',
+        // ]
+        // provide more robust information about the props by defining a schema.
+        props: {
+            property3: String,
+            property4: Number
+        },
         data() {
             return {
                 styleH2Title: {
@@ -33,16 +48,7 @@
                     }
                 ],
 
-                bookPriceStyle: {
-                    'padding': '5px',
-                    'background': 'green',
-                    'font-weight': '600',
-                    'color': 'white',
-                    'font-size': '1.5em',
-                    'position': 'absolute',
-                    'top': '0.25em',
-                    'left': '0.25em',
-                },
+                
 
                 books: [
                     {
@@ -188,17 +194,7 @@
     </div>
     <div class="main-page">
         <div class="book-container" :class="`book-container-${rowCount}-column`">
-            <div class="book-item" :style="productCardStyle" v-for="(book, index) in books" :key="index" :class="{ 'first' : index === 0 }">
-                <div class="book-image-area">
-                    <img v-bind:src="book.imageSrc">
-                    <span :style="bookPriceStyle">{{ book.price }}</span>
-                    <span class="sold-out-badge" v-show="book.stockAmount < 10">Almost sold out!</span>
-                </div>
-                <h2 v-bind:style="styleH2Title">{{ book.name }}
-                </h2>
-                <div>{{ book.desc }}</div>
-                <button v-if="!book.isBasket" class="add-basket" @click="addBasket(book)">Add Basket</button>
-            </div>
+            <book-container :bookItems=books></book-container>
         </div>
         <div class="book-basket">
             <h3>Basket list</h3>
@@ -239,39 +235,5 @@
     .book-container-8-column {
         grid-template-columns: repeat(8, 1fr);
     }
-    .book-item {
-        padding: 10px;
-        border-radius: 5px;
-    }
-    .book-item img {
-        width: 100%;
-    }
-    .book-item.first {
-        background: grey;
-        color:#fff;
-    }
-    .book-item.first h2 {
-        color: #fff!important;
-    }
-    .book-image-area {
-        position: relative;
-    }
-    .add-basket {
-        font-size: 0.7em;
-        color: black;
-        float: right;
-        text-align: center;
-        cursor: pointer;
-        margin: 5px 0;
-    }
-    .sold-out-badge {
-        left:calc(100% - 95%);
-        width: 80%;
-        position: absolute;
-        bottom: 0;
-        background:red;
-        padding: 5px;
-        color: white;
-        border-radius: 5px;
-    }
+    
 </style>
